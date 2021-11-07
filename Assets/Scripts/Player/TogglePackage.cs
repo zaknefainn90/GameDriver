@@ -1,63 +1,67 @@
+using GameUI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TogglePackage : MonoBehaviour
+namespace Player
 {
-    private SpriteRenderer packageSpriteRenderer;
-    private bool hasPackage;
-    private ScoreUI CurrentScore;
-
-    private void Awake()
+    public class TogglePackage : MonoBehaviour
     {
-        CurrentScore = FindObjectOfType<ScoreUI>();
-        packageSpriteRenderer = gameObject.transform.Find("InPackage").gameObject.GetComponent<SpriteRenderer>();
-    }
+        private SpriteRenderer packageSpriteRenderer;
+        private bool hasPackage;
+        private ScoreUI CurrentScore;
 
-    private void Start()
-    {
-        packageSpriteRenderer.enabled = false;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Package" && !hasPackage)
+        private void Awake()
         {
-            PickUpPackage(collision);
-            ResetPicUpTimer("DROP");
+            CurrentScore = FindObjectOfType<ScoreUI>();
+            packageSpriteRenderer = gameObject.transform.Find("InPackage").gameObject.GetComponent<SpriteRenderer>();
         }
-        if (collision.tag == "Customer" && hasPackage)
+
+        private void Start()
         {
-            PutDownPackage();
-            AddScorePoint();
-            ResetPicUpTimer("PICK");
+            packageSpriteRenderer.enabled = false;
         }
-    }
 
-    private void ResetPicUpTimer(string activity)
-    {
-        TimeLeftUI timer = FindObjectOfType<TimeLeftUI>();
-        timer.SliderValue = 0f;
-        timer.TimerLabelText = "TIME TO " + activity + " PACKAGE";
-    }
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.tag == "Package" && !hasPackage)
+            {
+                PickUpPackage(collision);
+                ResetPicUpTimer("DROP");
+            }
+            if (collision.tag == "Customer" && hasPackage)
+            {
+                PutDownPackage();
+                AddScorePoint();
+                ResetPicUpTimer("PICK");
+            }
+        }
 
-    private void AddScorePoint()
-    {
-        int actualScore = CurrentScore.Score;
-        CurrentScore.Score = actualScore + 1;
-    }
+        private void ResetPicUpTimer(string activity)
+        {
+            TimeLeftUI timer = FindObjectOfType<TimeLeftUI>();
+            timer.SliderValue = 0f;
+            timer.TimerLabelText = "TIME TO " + activity + " PACKAGE";
+        }
 
-    private void PutDownPackage()
-    {
-        hasPackage = false;
-        packageSpriteRenderer.enabled = false;
-    }
+        private void AddScorePoint()
+        {
+            int actualScore = CurrentScore.Score;
+            CurrentScore.Score = actualScore + 1;
+        }
 
-    private void PickUpPackage(Collider2D collision)
-    {
-        Destroy(collision.gameObject);
-        packageSpriteRenderer.enabled = true;
-        hasPackage = true;
+        private void PutDownPackage()
+        {
+            hasPackage = false;
+            packageSpriteRenderer.enabled = false;
+        }
+
+        private void PickUpPackage(Collider2D collision)
+        {
+            Destroy(collision.gameObject);
+            packageSpriteRenderer.enabled = true;
+            hasPackage = true;
+        }
     }
 }

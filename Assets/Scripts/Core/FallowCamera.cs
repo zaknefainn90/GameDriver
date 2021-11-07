@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FallowCamera : MonoBehaviour
+namespace Core
 {
-    [SerializeField] GameObject thingToFallow;
-    // Update is called once per frame
-    void LateUpdate()
+    public class FallowCamera : MonoBehaviour
     {
-        transform.position = thingToFallow.transform.position + new Vector3(0,0,-10);
+        [SerializeField] private GameObject thingToFallow;
+
+        // Update is called once per frame
+        private void LateUpdate()
+        {
+            transform.position = thingToFallow.transform.position + new Vector3(0, 0, -10);
+        }
     }
 }

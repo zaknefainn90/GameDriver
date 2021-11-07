@@ -1,62 +1,67 @@
+using CoreTypes;
+using GameUI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Buffs : MonoBehaviour
+namespace Core
 {
-    [SerializeField] private BuffScriptableObject buffData;
-    private SpeedUI SpeedUI;
-
-    private void Awake()
+    public class Buffs : MonoBehaviour
     {
-        SpeedUI = FindObjectOfType<SpeedUI>();
-    }
+        [SerializeField] private BuffScriptableObject buffData;
+        private SpeedUI SpeedUI;
 
-    public float buffValue
-    {
-        get
+        private void Awake()
         {
-            return buffData.boostValue;
+            SpeedUI = FindObjectOfType<SpeedUI>();
         }
-    }
 
-    public float CalcCurrentMovment(float basicMoveSpeed)
-    {
-        if (buffData.type == BuffsType.PowerUp)
+        public float buffValue
         {
-            float currentMoveSpeed = basicMoveSpeed + buffData.boostValue;
-            SpeedUIBoost(currentMoveSpeed);
-
-            return currentMoveSpeed;
+            get
+            {
+                return buffData.boostValue;
+            }
         }
-        else
+
+        public float CalcCurrentMovment(float basicMoveSpeed)
         {
-            float currentMoveSpeed = basicMoveSpeed - buffData.boostValue;
-            SpeedUIReduced(currentMoveSpeed);
+            if (buffData.type == BuffsType.PowerUp)
+            {
+                float currentMoveSpeed = basicMoveSpeed + buffData.boostValue;
+                SpeedUIBoost(currentMoveSpeed);
 
-            return currentMoveSpeed;
+                return currentMoveSpeed;
+            }
+            else
+            {
+                float currentMoveSpeed = basicMoveSpeed - buffData.boostValue;
+                SpeedUIReduced(currentMoveSpeed);
+
+                return currentMoveSpeed;
+            }
         }
-    }
 
-    private void SpeedUIBoost(float currentMoveSpeed)
-    {
-        float calcPercentSpeed = SpeedUI.CalcMoveSpeedToSpeedPercent(currentMoveSpeed, buffData.boostValue);
-        SpeedUI.Speed = 100 + (int)calcPercentSpeed;
-    }
+        private void SpeedUIBoost(float currentMoveSpeed)
+        {
+            float calcPercentSpeed = SpeedUI.CalcMoveSpeedToSpeedPercent(currentMoveSpeed, buffData.boostValue);
+            SpeedUI.Speed = 100 + (int)calcPercentSpeed;
+        }
 
-    private void SpeedUIReduced(float currentMoveSpeed)
-    {
-        float calcPercentSpeed = SpeedUI.CalcMoveSpeedToSpeedPercent(currentMoveSpeed, buffData.boostValue);
-        SpeedUI.Speed = 100 - (int)calcPercentSpeed;
-    }
+        private void SpeedUIReduced(float currentMoveSpeed)
+        {
+            float calcPercentSpeed = SpeedUI.CalcMoveSpeedToSpeedPercent(currentMoveSpeed, buffData.boostValue);
+            SpeedUI.Speed = 100 - (int)calcPercentSpeed;
+        }
 
-    public void ResetSpeedUI()
-    {
-        SpeedUI.Speed = 100;
-    }
+        public void ResetSpeedUI()
+        {
+            SpeedUI.Speed = 100;
+        }
 
-    public void DestroyBuff()
-    {
-        Destroy(gameObject);
+        public void DestroyBuff()
+        {
+            Destroy(gameObject);
+        }
     }
 }

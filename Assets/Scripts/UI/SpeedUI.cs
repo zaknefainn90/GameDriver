@@ -3,40 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class SpeedUI : MonoBehaviour
+namespace GameUI
 {
-    [SerializeField] private TextMeshProUGUI speedLabel;
-    private int speed;
-
-    public int Speed
+    public class SpeedUI : MonoBehaviour
     {
-        get { return speed; }
-        set
-        {
-            speed = value;
-            speedLabel.text = "SPEED: " + speed + "%";
-            SwitchColorBySpeed();
-        }
-    }
+        [SerializeField] private TextMeshProUGUI speedLabel;
+        private int speed;
 
-    private void SwitchColorBySpeed()
-    {
-        if (speed > 100)
+        public int Speed
         {
-            speedLabel.color = Color.blue;
+            get { return speed; }
+            set
+            {
+                speed = value;
+                speedLabel.text = "SPEED: " + speed + "%";
+                SwitchColorBySpeed();
+            }
         }
-        else if (speed < 100)
-        {
-            speedLabel.color = Color.red;
-        }
-        else
-        {
-            speedLabel.color = Color.white;
-        }
-    }
 
-    public float CalcMoveSpeedToSpeedPercent(float basicSpeed, float differenceSpeed)
-    {
-        return (differenceSpeed / basicSpeed) * 100;
+        private void SwitchColorBySpeed()
+        {
+            if (speed > 100)
+            {
+                speedLabel.color = Color.blue;
+            }
+            else if (speed < 100)
+            {
+                speedLabel.color = Color.red;
+            }
+            else
+            {
+                speedLabel.color = Color.white;
+            }
+        }
+
+        public float CalcMoveSpeedToSpeedPercent(float basicSpeed, float differenceSpeed)
+        {
+            return (differenceSpeed / basicSpeed) * 100;
+        }
     }
 }

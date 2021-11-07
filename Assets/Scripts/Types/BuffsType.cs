@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum BuffsType
+namespace CoreTypes
 {
-    PowerUp,
-    PowerDown,
+    public enum BuffsType
+    {
+        PowerUp,
+        PowerDown,
+    }
 }

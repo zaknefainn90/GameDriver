@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class ScoreUI : MonoBehaviour
+namespace GameUI
 {
-    [SerializeField] private TextMeshProUGUI scoreLabel;
-    private int score = 0;
-
-    public int Score
+    public class ScoreUI : MonoBehaviour
     {
-        get { return score; }
-        set
+        [SerializeField] private TextMeshProUGUI scoreLabel;
+        private int score = 0;
+
+        public int Score
         {
-            score = value;
-            scoreLabel.text = "SCORE: " + score;
+            get { return score; }
+            set
+            {
+                score = value;
+                scoreLabel.text = "SCORE: " + score;
+            }
         }
     }
 }

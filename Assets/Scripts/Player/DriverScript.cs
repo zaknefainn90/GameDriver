@@ -1,97 +1,102 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameUI;
+using Core;
 
-public class DriverScript : MonoBehaviour
+namespace Player
 {
-    [Header("Movment")]
-    [SerializeField] private float steerSpeed = 100f;
-
-    [SerializeField] private float basicMoveSpeed = 20f;
-
-    [Header("Buffs")]
-    [SerializeField] private float buffTimerDefault = 3;
-
-    private float buffTimerCurrent;
-    private float currentMoveSpeed;
-    private bool buffTimerStar = false;
-    private HpUI hpUI;
-    private SpeedUI SpeedUI;
-
-    private void Awake()
+    public class DriverScript : MonoBehaviour
     {
-        currentMoveSpeed = basicMoveSpeed;
-        buffTimerCurrent = buffTimerDefault;
-        SpeedUI = FindObjectOfType<SpeedUI>();
-    }
+        [Header("Movment")]
+        [SerializeField] private float steerSpeed = 100f;
 
-    private void Start()
-    {
-        hpUI = FindObjectOfType<HpUI>();
-    }
+        [SerializeField] private float basicMoveSpeed = 20f;
 
-    private void Update()
-    {
-        MoveCar();
-        BuffTimer();
-    }
+        [Header("Buffs")]
+        [SerializeField] private float buffTimerDefault = 3;
 
-    private void MoveCar()
-    {
-        float steerAmount = Input.GetAxis("Horizontal") * steerSpeed * Time.deltaTime;
-        float moveDirection = Input.GetAxis("Vertical") * currentMoveSpeed * Time.deltaTime;
-        transform.Rotate(0, 0, -steerAmount);
-        transform.Translate(0, moveDirection, 0);
-    }
+        private float buffTimerCurrent;
+        private float currentMoveSpeed;
+        private bool buffTimerStar = false;
+        private HpUI hpUI;
+        private SpeedUI SpeedUI;
 
-    private void BuffTimer()
-    {
-        if (buffTimerStar)
+        private void Awake()
         {
-            if (buffTimerCurrent > 0)
+            currentMoveSpeed = basicMoveSpeed;
+            buffTimerCurrent = buffTimerDefault;
+            SpeedUI = FindObjectOfType<SpeedUI>();
+        }
+
+        private void Start()
+        {
+            hpUI = FindObjectOfType<HpUI>();
+        }
+
+        private void Update()
+        {
+            MoveCar();
+            BuffTimer();
+        }
+
+        private void MoveCar()
+        {
+            float steerAmount = Input.GetAxis("Horizontal") * steerSpeed * Time.deltaTime;
+            float moveDirection = Input.GetAxis("Vertical") * currentMoveSpeed * Time.deltaTime;
+            transform.Rotate(0, 0, -steerAmount);
+            transform.Translate(0, moveDirection, 0);
+        }
+
+        private void BuffTimer()
+        {
+            if (buffTimerStar)
             {
-                buffTimerCurrent -= Time.deltaTime;
+                if (buffTimerCurrent > 0)
+                {
+                    buffTimerCurrent -= Time.deltaTime;
+                }
+                else
+                {
+                    ResetBuffTimer();
+                }
             }
-            else
+            Debug.Log(buffTimerCurrent);
+        }
+
+        private void ResetBuffTimer()
+        {
+            buffTimerStar = false;
+            buffTimerCurrent = buffTimerDefault;
+            SpeedUI.Speed = 100;
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            hpUI.getHit();
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.tag == "Buff")
             {
-                ResetBuffTimer();
+                StartBuffTimer();
+                HandleBuff(other);
             }
         }
-        Debug.Log(buffTimerCurrent);
-    }
 
-    private void ResetBuffTimer()
-    {
-        buffTimerStar = false;
-        buffTimerCurrent = buffTimerDefault;
-        SpeedUI.Speed = 100;
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        hpUI.getHit();
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.tag == "Buff")
+        private void StartBuffTimer()
         {
-            StartBuffTimer();
-            HandleBuff(other);
+            buffTimerStar = true;
+            buffTimerCurrent = buffTimerDefault;
         }
-    }
 
-    private void StartBuffTimer()
-    {
-        buffTimerStar = true;
-        buffTimerCurrent = buffTimerDefault;
-    }
+        private void HandleBuff(Collider2D other)
+        {
+            Buffs buff = other.gameObject.GetComponent<Buffs>();
 
-    private void HandleBuff(Collider2D other)
-    {
-        Buffs buff = other.gameObject.GetComponent<Buffs>();
-
-        currentMoveSpeed = buff.CalcCurrentMovment(basicMoveSpeed);
-        buff.DestroyBuff();
+            currentMoveSpeed = buff.CalcCurrentMovment(basicMoveSpeed);
+            buff.DestroyBuff();
+        }
     }
 }

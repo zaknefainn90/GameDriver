@@ -4,54 +4,57 @@ using UnityEngine;
 using UnityEngine.UI;
 using Core;
 
-public class HpUI : MonoBehaviour
+namespace GameUI
 {
-    private List<GameObject> hpImages = new List<GameObject>();
-    private int lastHpActiveIndex;
-    private bool isBlocked = false;
-
-    private void Awake()
+    public class HpUI : MonoBehaviour
     {
-        GetHpGameObjectsToList();
-        lastHpActiveIndex = hpImages.Count;
-    }
+        private List<GameObject> hpImages = new List<GameObject>();
+        private int lastHpActiveIndex;
+        private bool isBlocked = false;
 
-    private void GetHpGameObjectsToList()
-    {
-        foreach (Transform child in transform)
+        private void Awake()
         {
-            hpImages.Add(child.gameObject);
+            GetHpGameObjectsToList();
+            lastHpActiveIndex = hpImages.Count;
         }
-    }
 
-    public void getHit()
-    {
-        bool isHpGreatherThanZero = lastHpActiveIndex >= 0;
-
-        if (isHpGreatherThanZero)
+        private void GetHpGameObjectsToList()
         {
-            StartCoroutine(DownHpWithTimeout());
-            EndGameWhenZeroHp();
+            foreach (Transform child in transform)
+            {
+                hpImages.Add(child.gameObject);
+            }
         }
-    }
 
-    private IEnumerator DownHpWithTimeout()
-    {
-        if (!isBlocked)
+        public void getHit()
         {
-            isBlocked = true;
-            hpImages[lastHpActiveIndex - 1].SetActive(false);
-            lastHpActiveIndex--;
+            bool isHpGreatherThanZero = lastHpActiveIndex >= 0;
+
+            if (isHpGreatherThanZero)
+            {
+                StartCoroutine(DownHpWithTimeout());
+                EndGameWhenZeroHp();
+            }
         }
-        yield return new WaitForSeconds(0.1f);
-        isBlocked = false;
-    }
 
-    private void EndGameWhenZeroHp()
-    {
-        if (lastHpActiveIndex == 0)
+        private IEnumerator DownHpWithTimeout()
         {
-            FindObjectOfType<GameManager>().LoadMenuScene();
+            if (!isBlocked)
+            {
+                isBlocked = true;
+                hpImages[lastHpActiveIndex - 1].SetActive(false);
+                lastHpActiveIndex--;
+            }
+            yield return new WaitForSeconds(0.1f);
+            isBlocked = false;
+        }
+
+        private void EndGameWhenZeroHp()
+        {
+            if (lastHpActiveIndex == 0)
+            {
+                FindObjectOfType<GameManager>().LoadMenuScene();
+            }
         }
     }
 }

@@ -14,19 +14,28 @@ namespace Player
         public override void Enter()
         {
             base.Enter();
+
             verticalInput = 0f;
         }
 
         public override void UpdateLogic()
         {
             base.UpdateLogic();
-            verticalInput = Input.GetAxis("Vertical");
 
-            if (Mathf.Abs(verticalInput) > Mathf.Epsilon)
+            verticalInput = Input.GetAxis("Vertical");
+            bool keyPreesed = Mathf.Abs(verticalInput) > Mathf.Epsilon;
+
+            if (keyPreesed)
             {
-                BaseState changeTo = ((DriverSM)stateMachine).driverState;
-                stateMachine.ChangeState(changeTo);
+                ChangeToDriverState();
             }
+        }
+
+        private void ChangeToDriverState()
+        {
+            DriverSM driverStateMachine = (DriverSM)stateMachine;
+
+            stateMachine.ChangeState(driverStateMachine.driverState);
         }
     }
 }

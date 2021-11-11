@@ -5983,6 +5983,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feac17d39fc1e294493767154080f2e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  steerSpeed: 100
+  basicMoveSpeed: 20
 --- !u!1 &650469319
 GameObject:
   m_ObjectHideFlags: 0

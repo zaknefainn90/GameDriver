@@ -10,6 +10,7 @@ public class StateMachine : MonoBehaviour
     void Start()
     {
         currentState = GetInitialState();
+
         if (currentState != null)
         {
             currentState.Enter();
@@ -28,7 +29,7 @@ public class StateMachine : MonoBehaviour
     {
         if (currentState != null)
         {
-            currentState.UpdateLogic();
+            currentState.UpdatePhysics();
         }
     }
 

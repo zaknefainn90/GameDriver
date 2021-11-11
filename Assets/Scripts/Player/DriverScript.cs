@@ -61,7 +61,6 @@ namespace Player
                     ResetBuffTimer();
                 }
             }
-            Debug.Log(buffTimerCurrent);
         }
 
         private void ResetBuffTimer()

@@ -25,10 +25,8 @@ namespace Core.StateMachine
 
         public virtual void Exit() { }
 
-        public static explicit operator BaseState(Idle v)
-        {
-            throw new NotImplementedException();
-        }
-    }
+        public virtual void OnCollisionEnter2DStateMachine(Collision2D collision) { }
 
+        public virtual void OnTriggerEnter2DStateMachine(Collider2D colider) { }
+    }
 }

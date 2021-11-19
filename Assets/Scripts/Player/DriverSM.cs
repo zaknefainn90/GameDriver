@@ -9,6 +9,9 @@ public class DriverSM : StateMachine
     [Header("Movment")]
     [SerializeField] public float steerSpeed = 100f;
     [SerializeField] public float basicMoveSpeed = 20f;
+    [Header("Buffs")]
+    [SerializeField] private float buffsTimerDuration = 3;
+    private float buffsTimerCurrent;
 
     [HideInInspector]
     public Idle idleState;
@@ -17,6 +20,7 @@ public class DriverSM : StateMachine
 
     private void Awake()
     {
+        buffsTimerCurrent = buffsTimerDuration;
         idleState = new Idle(this);
         driverState = new Driver(this);
     }

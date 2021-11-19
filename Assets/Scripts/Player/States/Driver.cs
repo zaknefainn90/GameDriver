@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Core.StateMachine;
 
 namespace Player
 {
@@ -28,6 +29,22 @@ namespace Player
             UpdatePositionsByAxis(driverStateMachine);
             ManageMovment();
         }
+
+        //public override void OnCollisionEnter2DStateMachine(Collision2D collision)
+        //{
+        //    base.OnCollisionEnter2DStateMachine(collision);
+        //}
+
+        public override void OnTriggerEnter2DStateMachine(Collider2D colider)
+        {
+            base.OnTriggerEnter2DStateMachine(colider);
+
+            if (colider.tag == "Buff")
+            {
+                Debug.Log("pickBuff");
+            }
+        }
+
         private void UpdatePositionsByAxis(DriverSM driverStateMachine)
         {
             horizontalInput = Input.GetAxis("Horizontal") * driverStateMachine.steerSpeed * Time.deltaTime;

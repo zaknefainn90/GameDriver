@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Player;
+using Core.StateMachine;
 
 public class DriverSM : StateMachine
 {
@@ -22,6 +23,6 @@ public class DriverSM : StateMachine
 
     protected override BaseState GetInitialState()
     {
-        return idleState;
+        return (BaseState)idleState;
     }
 }
